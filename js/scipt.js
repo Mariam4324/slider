@@ -6,6 +6,7 @@ const images = document.querySelectorAll(".slider_img");
 let distance = 0;
 let paginationIndicators = [];
 let currentPage = 0;
+let imgWidth = 480;
 
 //адаптив
 // window.addEventListener('resize', () => {
@@ -17,12 +18,13 @@ nextBtn.addEventListener("click", () => {
   currentPage++;
   if (currentPage >= images.length) currentPage = 0;
 
-  distance += 480;
-  if (distance > 960) {
+  distance += imgWidth;
+  if (distance > imgWidth * 2) {
     distance = 0;
   }
   track.style.left = -distance + "px";
   addActiveIndicator(currentPage);
+  calcDistance();
 });
 
 // обратное перелистывание
@@ -30,12 +32,13 @@ backBtn.addEventListener("click", () => {
   currentPage--;
   if (currentPage < 0) currentPage = images.length - 1;
 
-  distance -= 480;
+  distance -= imgWidth;
   if (distance < 0) {
-    distance = 960;
+    distance = imgWidth * 2;
   }
   track.style.left = -distance + "px";
   addActiveIndicator(currentPage);
+  calcDistance();
 });
 
 //создание обёртки индикаторов
@@ -47,7 +50,7 @@ function createIndicators() {
   renderIndicators(indicators);
 
   paginationIndicators[0].className = "indicator active";
-
+  calcDistance();
   return indicators;
 }
 createIndicators();
@@ -60,10 +63,34 @@ function renderIndicators(indicators) {
 
     indicators.append(indicator);
     paginationIndicators.push(indicator);
+    calcDistance();
   }
 }
 
+// задаю перемещение слайдов
+function calcDistance() {
+  track.style.left = `${-currentPage * imgWidth}px`;
+}
+
+// закрашивание индикатора относительно текущей страницы
 function addActiveIndicator(currentPage) {
   paginationIndicators.forEach((el) => (el.className = "indicator"));
   paginationIndicators[currentPage].className = "indicator active";
+  calcDistance();
 }
+
+// листание по индикаторам
+paginationIndicators.forEach((el, index) => {
+  el.addEventListener("click", () => {
+    currentPage = index;
+    calcDistance();
+    addActiveIndicator(currentPage);
+  });
+});
+
+// const circles = document.getElementsByClassName("indicator");
+// circles.forEach((el) => {
+//   el.addEventListener("click", (e) => {
+//     console.log(e);
+//   });
+// });
