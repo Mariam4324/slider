@@ -1,65 +1,69 @@
 const track = document.querySelector(".slider_track");
 const backBtn = document.querySelector(".left_arrow_btn");
 const nextBtn = document.querySelector(".right_arrow_btn");
+const wrapper = document.querySelector(".wrapper");
+const images = document.querySelectorAll(".slider_img");
 let distance = 0;
+let paginationIndicators = [];
+let currentPage = 0;
 
+//адаптив
+// window.addEventListener('resize', () => {
+//   images.forEach((el) => )
+// })
+
+// прямое перелистывание
 nextBtn.addEventListener("click", () => {
+  currentPage++;
+  if (currentPage >= images.length) currentPage = 0;
+
   distance += 480;
   if (distance > 960) {
     distance = 0;
   }
   track.style.left = -distance + "px";
+  addActiveIndicator(currentPage);
 });
 
+// обратное перелистывание
 backBtn.addEventListener("click", () => {
+  currentPage--;
+  if (currentPage < 0) currentPage = images.length - 1;
+
   distance -= 480;
   if (distance < 0) {
     distance = 960;
   }
   track.style.left = -distance + "px";
+  addActiveIndicator(currentPage);
 });
 
-// const rightSwitch = document.querySelector(".left_arrow_btn");
-// const leftSwitch = document.querySelector(".right_arrow_btn");
-// let imgIndex = 0;
+//создание обёртки индикаторов
+function createIndicators() {
+  const indicators = document.createElement("div");
+  indicators.className = "indicators";
 
-// const images = document.querySelectorAll(".slider_img");
-// const switches = document.querySelectorAll(".switch");
+  wrapper.append(indicators);
+  renderIndicators(indicators);
 
-// console.log(images);
+  paginationIndicators[0].className = "indicator active";
 
-// function leaf(index) {
-//   images[imgIndex].classList.remove("active");
-//   images[index].classList.add("active");
-//   imgIndex = index;
-// }
+  return indicators;
+}
+createIndicators();
 
-// rightSwitch.addEventListener("click", (ev) => {
-//   console.log("right");
-// });
+// рендер индикаторов исходя из количества фотографий
+function renderIndicators(indicators) {
+  for (page = 0; page < images.length; page++) {
+    const indicator = document.createElement("button");
+    indicator.className = "indicator";
 
-// leftSwitch.addEventListener("click", (ev) => {
-//   console.log("left");
-// });
-// switches.forEach((el) => {
-//   el.addEventListener("click", (ev) => {
-//     if (ev.target.classList.contains("left_arrow_btn")) {
-//       let index = imgIndex - 1;
+    indicators.append(indicator);
+    paginationIndicators.push(indicator);
+  }
+}
 
-//       if (index < 0) {
-//         index = images.length - 1;
-//       }
-
-//       leaf(index);
-//     } else if (ev.target.classList.contains("right_arrow_btn")) {
-//       let index = imgIndex + 1;
-
-//       if (index >= images.length) {
-//         index = 0;
-//       }
-//       leaf(index);
-//     }
-//   });
-// });
-
-// leaf(imgIndex);
+function addActiveIndicator(currentPage) {
+  paginationIndicators.forEach((el) => (el.className = "indicator"));
+  paginationIndicators[currentPage].className = "indicator active";
+}
