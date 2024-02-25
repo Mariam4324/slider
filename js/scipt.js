@@ -5,6 +5,7 @@ const wrapper = document.querySelector(".wrapper");
 const images = document.querySelectorAll(".slider_img");
 let distance = 0;
 let paginationIndicators = [];
+let sliderVars = [];
 let currentPage = 0;
 let imgWidth = 480;
 
@@ -87,10 +88,3 @@ paginationIndicators.forEach((el, index) => {
     addActiveIndicator(currentPage);
   });
 });
-
-// const circles = document.getElementsByClassName("indicator");
-// circles.forEach((el) => {
-//   el.addEventListener("click", (e) => {
-//     console.log(e);
-//   });
-// });

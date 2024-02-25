@@ -13,6 +13,14 @@ html {
   scrollbar-width: none;
 }
 
+.grid-container {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 img {
   display: block;
 }
